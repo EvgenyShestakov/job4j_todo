@@ -23,7 +23,86 @@
 </head>
 <body>
 <div class="container pt-3">
-<h1>Hello world</h1>
+    <div class="row">
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                TODO List
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div>
+                        <a class="nav-link" href='<c:url value="/addtask.jsp"/>'>Добавить новое задание</a>
+                    </div>
+                    <div>
+                        <form action="<c:url value='/status'/>" method="get">
+                            <label>
+                                <input type="checkbox" name="checkbox" value="true">
+                            </label>
+                            <input type="submit" value="Показать все">
+                        </form>
+                    </div>
+                    <div>
+                        <c:choose>
+                            <c:when test = "${sessionScope.checkbox == true}">
+                                <div style="color:green; font-weight: bold; margin: 5px 0;">
+                                    <c:out value="Вкл"/>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div style="color:red; font-weight: bold; margin: 5px 0;">
+                                    <c:out value="Выкл"/>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Номер</th>
+                        <th scope="col">Описание</th>
+                        <th scope="col">Дата Создания</th>
+                        <th scope="col">Статус задания</th>
+                        <th scope="col">Смена статуса</th>
+                    </tr>
+                    <tbody>
+                    <c:forEach items="${requestScope.items}" var="item">
+                        <tr>
+                            <td>
+                                <c:out value="${item.id}"/>
+                            </td>
+                            <td>
+                                <c:out value="${item.description}"/>
+                            </td>
+                            <td>
+                                <c:out value="${item.created}"/>
+                            </td>
+                            <td>
+                                <c:choose>
+                                    <c:when test = "${item.done == true}">
+                                        <div style="color:green; font-weight: bold; margin: 30px 0;">
+                                            <c:out value="Задание выполнено"/>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div style="color:red; font-weight: bold; margin: 30px 0;">
+                                            <c:out value="Задание не выполнено"/>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>
+                                <form action="<c:url value='/status?id=${item.id}&done=${item.done}'/>" method="post" enctype="multipart/form-data">
+                                    <button type="submit" class="btn btn-primary">Закрыть/Открыть задание</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
