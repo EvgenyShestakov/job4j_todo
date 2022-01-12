@@ -10,21 +10,24 @@ public class Item implements Comparable<Item> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String description;
+
     private LocalDate created = LocalDate.now();
+
     private boolean done;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Item() {
 
     }
 
-    public Item(String description) {
+    public Item(String description, User user) {
         this.description = description;
-    }
-
-    public Item(int id, String description) {
-        this.id = id;
-        this.description = description;
+        this.user = user;
     }
 
     public int getId() {

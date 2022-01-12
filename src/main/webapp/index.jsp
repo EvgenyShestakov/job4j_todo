@@ -31,9 +31,6 @@
             <div class="card-body">
                 <div class="row">
                     <div>
-                        <a class="nav-link" href='<c:url value="/addtask.jsp"/>'>Добавить новое задание</a>
-                    </div>
-                    <div>
                         <form action="<c:url value='/status'/>" method="get">
                             <label>
                                 <input type="checkbox" name="checkbox" value="true">
@@ -55,11 +52,14 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
+                    <div>
+                        <jsp:include page="/header.jsp"/>
+                    </div>
                 </div>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Номер</th>
+                        <th scope="col">Автор</th>
                         <th scope="col">Описание</th>
                         <th scope="col">Дата Создания</th>
                         <th scope="col">Статус задания</th>
@@ -69,7 +69,7 @@
                     <c:forEach items="${requestScope.items}" var="item">
                         <tr>
                             <td>
-                                <c:out value="${item.id}"/>
+                                <c:out value="${sessionScope.user.name}"/>
                             </td>
                             <td>
                                 <c:out value="${item.description}"/>

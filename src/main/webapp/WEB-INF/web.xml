@@ -10,7 +10,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ItemServlet</servlet-name>
-        <url-pattern>/items</url-pattern>
+        <url-pattern>/items.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>StatusServlet</servlet-name>
@@ -20,4 +20,44 @@
         <servlet-name>StatusServlet</servlet-name>
         <url-pattern>/status</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlet.AuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RegServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlet.RegServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RegServlet</servlet-name>
+        <url-pattern>/reg.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlet.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddTaskServlet</servlet-name>
+        <servlet-class>ru.job4j.todo.servlet.AddTaskServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddTaskServlet</servlet-name>
+        <url-pattern>/add.do</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>ru.job4j.todo.filter.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
 </web-app>

@@ -15,7 +15,7 @@ public class StatusServlet extends HttpServlet {
         } else {
             req.getSession().setAttribute("checkbox", false);
         }
-        resp.sendRedirect(req.getContextPath() + "/items");
+        resp.sendRedirect(req.getContextPath() + "/items.do");
     }
 
     @Override
@@ -24,6 +24,6 @@ public class StatusServlet extends HttpServlet {
         String id = req.getParameter("id");
         String done = req.getParameter("done");
         HbnStore.instOf().updateItem(Integer.parseInt(id), Boolean.parseBoolean(done));
-        resp.sendRedirect(req.getContextPath() + "/items");
+        resp.sendRedirect(req.getContextPath() + "/items.do");
     }
 }

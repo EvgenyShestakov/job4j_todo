@@ -8,6 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -48,17 +49,27 @@ public class HbnStore implements Store, AutoCloseable {
     }
 
     @Override
-    public Collection<Item> findAllItems() {
-        List<Item> result = tx(session -> session.createQuery("from ru.job4j."
-                + "todo.model.Item").getResultList());
-        Collections.sort(result);
-        return result;
+    public Collection<Item> findAllItems(User user) {
+        return tx(session -> {
+            Query<Item> query = session.createQuery("from ru.job4j."
+                    + "todo.model.Item where user = :userParam");
+            query.setParameter("userParam", user);
+            List<Item> result = query.getResultList();
+            Collections.sort(result);
+            return result;
+        });
     }
 
     @Override
-    public Collection<Item> findNotDoneItems() {
-        return tx(session -> session.createQuery("from ru.job4j.todo.model.Item where "
-                + "done = false").getResultList());
+    public Collection<Item> findNotDoneItems(User user) {
+        return tx(session -> {
+            Query<Item> query = session.createQuery("from ru.job4j."
+                    + "todo.model.Item where done = false and user = :userParam");
+            query.setParameter("userParam", user);
+            List<Item> result = query.getResultList();
+            Collections.sort(result);
+            return result;
+        });
     }
 
     @Override
@@ -67,10 +78,15 @@ public class HbnStore implements Store, AutoCloseable {
     }
 
     @Override
+    public void saveUser(User user) {
+        tx(session -> session.save(user));
+    }
+
+    @Override
     public boolean updateItem(int id, boolean done) {
         return tx(session -> {
             Query<Item> query =  session.createQuery("update ru.job4j.todo."
-                + "model." + "Item set done = :doneParam where id = :idParam");
+                    + "model." + "Item set done = :doneParam where id = :idParam");
             query.setParameter("doneParam", !done);
             query.setParameter("idParam", id);
             return query.executeUpdate() > 0;
@@ -78,8 +94,18 @@ public class HbnStore implements Store, AutoCloseable {
     }
 
     @Override
-    public Item findItemById(int id) {
-        return tx(session -> session.get(Item.class, id));
+    public User findUserByEmail(String email) {
+        return tx(session -> {
+            Query<User> query = session.createQuery("from ru.job4j.todo."
+                    + "model.User where email = :paramEmail");
+            query.setParameter("paramEmail", email);
+            List<User> result = query.getResultList();
+            User user = null;
+            if (result.size() != 0) {
+                user = result.get(0);
+            }
+            return user;
+        });
     }
 
     @Override

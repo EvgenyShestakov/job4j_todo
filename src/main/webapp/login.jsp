@@ -1,6 +1,5 @@
-<%@ page language="java" pageEncoding="UTF-8" session="true"%>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page isELIgnored="false" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,7 +17,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    <title>TODO List</title>
+    <title>Работа мечты</title>
 </head>
 <body>
 <div class="container pt-3">
@@ -27,13 +26,33 @@
     </div>
     <div class="row">
         <div class="card" style="width: 100%">
+            <div class="card-header">
+                Авторизация
+            </div>
             <div class="card-body">
-                <form action="<c:url value='/items.do'/>" method="post">
+                <form action="<c:url value='/auth.do'/>" method="post">
                     <div class="form-group">
-                        <label for="desc">Добавить новое задание</label>
-                        <input type="text" class="form-control" name="name" id="desc">
+                        <label>Почта</label>
+                        <input type="text" class="form-control" name="email">
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="text" class="form-control" name="password">
+                    </div>
+                    <div class="form-group">
+                        <a class="nav-link" href='<c:url value="/reg.do"/>'>Регистрация</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <c:if test="${not empty fine}">
+                        <div style="color:green; font-weight: bold; margin: 30px 0;">
+                            <c:out value="${fine}"/>
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty error}">
+                        <div style="color:red; font-weight: bold; margin: 30px 0;">
+                            <c:out value="${error}"/>
+                        </div>
+                    </c:if>
                 </form>
             </div>
         </div>

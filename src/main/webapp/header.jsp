@@ -1,5 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8" session="true"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 <!doctype html>
 <html lang="en">
@@ -18,25 +20,25 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-    <title>TODO List</title>
+    <title>Работа мечты</title>
 </head>
 <body>
-<div class="container pt-3">
+<div class="container">
     <div class="row">
-        <jsp:include page="/header.jsp"/>
-    </div>
-    <div class="row">
-        <div class="card" style="width: 100%">
-            <div class="card-body">
-                <form action="<c:url value='/items.do'/>" method="post">
-                    <div class="form-group">
-                        <label for="desc">Добавить новое задание</label>
-                        <input type="text" class="form-control" name="name" id="desc">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                </form>
-            </div>
-        </div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/items.do"/>'>Список дел</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/add.do"/>'>Добавить задание</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/login.jsp"/>'>Войти</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='<c:url value="/logout.do"/>'><c:out value="${sessionScope.user.name}"/> | Выйти</a>
+            </li>
+        </ul>
     </div>
 </div>
 </body>
