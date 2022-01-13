@@ -99,12 +99,7 @@ public class HbnStore implements Store, AutoCloseable {
             Query<User> query = session.createQuery("from ru.job4j.todo."
                     + "model.User where email = :paramEmail");
             query.setParameter("paramEmail", email);
-            List<User> result = query.getResultList();
-            User user = null;
-            if (result.size() != 0) {
-                user = result.get(0);
-            }
-            return user;
+            return query.uniqueResult();
         });
     }
 
