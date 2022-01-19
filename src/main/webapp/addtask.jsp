@@ -1,6 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" session="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page isELIgnored="false" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -29,9 +28,19 @@
         <div class="card" style="width: 100%">
             <div class="card-body">
                 <form action="<c:url value='/items.do'/>" method="post">
-                    <div class="form-group">
+                    <div class="form-group row">
                         <label for="desc">Добавить новое задание</label>
                         <input type="text" class="form-control" name="name" id="desc">
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-3" for="catIds" style="font-weight: 900">Список категорий</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" name="catIds" id="catIds" multiple>
+                                <c:forEach items="${requestScope.categories}" var="category">
+                                    <option value='<c:out value="${category.id}"/>'>${category.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

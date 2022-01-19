@@ -2,7 +2,7 @@ package ru.job4j.todo.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "item")
@@ -21,8 +21,10 @@ public class Item implements Comparable<Item> {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Item() {
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private final Set<Category> categories = new HashSet<>();
 
+    public Item() {
     }
 
     public Item(String description, User user) {
@@ -60,6 +62,14 @@ public class Item implements Comparable<Item> {
 
     public void setDone(boolean done) {
         this.done = done;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
     }
 
     @Override

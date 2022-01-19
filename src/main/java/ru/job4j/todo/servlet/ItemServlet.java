@@ -1,6 +1,6 @@
 package ru.job4j.todo.servlet;
 
-import org.hibernate.Session;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.store.HbnStore;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Collection;
+import java.util.*;
 
 public class ItemServlet extends HttpServlet {
 
@@ -34,16 +34,25 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req,
-                          HttpServletResponse resp) throws IOException,
-            ServletException {
+                          HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
         String description = req.getParameter("name");
-        if (!description.isEmpty()) {
+        String[] catIds = req.getParameterValues("catIds");
+        if (!description.isEmpty() && catIds != null && catIds.length > 0) {
             User user = (User) req.getSession().getAttribute("user");
-            HbnStore.instOf().saveItem(new Item(description, user));
+            Collection<Category> categories = HbnStore.instOf().findAllCategory();
+            Item item = new Item(description, user);
+            for (Category category : categories) {
+                for (String catId: catIds) {
+                    if (category.getId() == Integer.parseInt(catId)) {
+                        item.addCategory(category);
+                    }
+                }
+            }
+            HbnStore.instOf().saveItem(item);
             resp.sendRedirect(req.getContextPath() + "/items.do");
         } else {
-            req.getRequestDispatcher("/addtask.jsp").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/add.do");
         }
     }
 }

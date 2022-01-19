@@ -13,5 +13,12 @@ CREATE TABLE IF NOT EXISTS item
     created timestamp,
     done boolean,
     user_id int references users(id)
+
 );
+
+CREATE TABLE IF NOT EXISTS category
+(
+    id SERIAL PRIMARY KEY,
+    name TEXT
+)
 

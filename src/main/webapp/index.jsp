@@ -60,6 +60,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Автор</th>
+                        <th scope="col">Категория</th>
                         <th scope="col">Описание</th>
                         <th scope="col">Дата Создания</th>
                         <th scope="col">Статус задания</th>
@@ -70,6 +71,13 @@
                         <tr>
                             <td>
                                 <c:out value="${sessionScope.user.name}"/>
+                            </td>
+                            <td>
+                                <ul>
+                                    <c:forEach items="${item.categories}" var="category">
+                                        <li>${category.name}</li>
+                                    </c:forEach>
+                                </ul>
                             </td>
                             <td>
                                 <c:out value="${item.description}"/>

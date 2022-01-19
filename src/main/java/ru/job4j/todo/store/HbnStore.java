@@ -7,6 +7,7 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.model.User;
 
@@ -51,8 +52,8 @@ public class HbnStore implements Store, AutoCloseable {
     @Override
     public Collection<Item> findAllItems(User user) {
         return tx(session -> {
-            Query<Item> query = session.createQuery("from ru.job4j."
-                    + "todo.model.Item where user = :userParam");
+            Query<Item> query = session.createQuery("select distinct i from Item i join fetch i."
+                    + "categories where i.user = :userParam");
             query.setParameter("userParam", user);
             List<Item> result = query.getResultList();
             Collections.sort(result);
@@ -63,13 +64,18 @@ public class HbnStore implements Store, AutoCloseable {
     @Override
     public Collection<Item> findNotDoneItems(User user) {
         return tx(session -> {
-            Query<Item> query = session.createQuery("from ru.job4j."
-                    + "todo.model.Item where done = false and user = :userParam");
+            Query<Item> query = session.createQuery("select distinct i from Item i join fetch i."
+                    + "categories where i.done = false and i.user = :userParam");
             query.setParameter("userParam", user);
             List<Item> result = query.getResultList();
             Collections.sort(result);
             return result;
         });
+    }
+
+    @Override
+    public Collection<Category> findAllCategory() {
+        return tx(session -> session.createQuery("from ru.job4j.todo.model.Category").list());
     }
 
     @Override
