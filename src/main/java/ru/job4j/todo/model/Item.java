@@ -1,7 +1,6 @@
 package ru.job4j.todo.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -13,7 +12,8 @@ public class Item implements Comparable<Item> {
 
     private String description;
 
-    private LocalDate created = LocalDate.now();
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date(System.currentTimeMillis());
 
     private boolean done;
 
@@ -44,24 +44,12 @@ public class Item implements Comparable<Item> {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getCreated() {
+    public Date getCreated() {
         return created;
-    }
-
-    public void setCreated(LocalDate created) {
-        this.created = created;
     }
 
     public boolean isDone() {
         return done;
-    }
-
-    public void setDone(boolean done) {
-        this.done = done;
     }
 
     public Set<Category> getCategories() {
