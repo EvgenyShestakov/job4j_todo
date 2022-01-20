@@ -40,16 +40,8 @@ public class ItemServlet extends HttpServlet {
         String[] catIds = req.getParameterValues("catIds");
         if (!description.isEmpty() && catIds != null && catIds.length > 0) {
             User user = (User) req.getSession().getAttribute("user");
-            Collection<Category> categories = HbnStore.instOf().findAllCategory();
             Item item = new Item(description, user);
-            for (Category category : categories) {
-                for (String catId: catIds) {
-                    if (category.getId() == Integer.parseInt(catId)) {
-                        item.addCategory(category);
-                    }
-                }
-            }
-            HbnStore.instOf().saveItem(item);
+            HbnStore.instOf().saveItem(item, catIds);
             resp.sendRedirect(req.getContextPath() + "/items.do");
         } else {
             resp.sendRedirect(req.getContextPath() + "/add.do");

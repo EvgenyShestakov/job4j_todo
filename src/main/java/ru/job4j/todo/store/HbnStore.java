@@ -14,6 +14,7 @@ import ru.job4j.todo.model.User;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class HbnStore implements Store, AutoCloseable {
@@ -41,6 +42,20 @@ public class HbnStore implements Store, AutoCloseable {
             T rsl = command.apply(session);
             tx.commit();
             return rsl;
+        } catch (final Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    private void txv(final Consumer<Session> command) {
+        final Session session = sf.openSession();
+        final Transaction tx = session.beginTransaction();
+        try {
+            command.accept(session);
+            tx.commit();
         } catch (final Exception e) {
             session.getTransaction().rollback();
             throw e;
@@ -79,13 +94,19 @@ public class HbnStore implements Store, AutoCloseable {
     }
 
     @Override
-    public void saveItem(Item item) {
-        tx(session -> session.save(item));
+    public void saveItem(Item item, String[] catIds) {
+        txv(session -> {
+            for (String id : catIds) {
+                Category category = session.find(Category.class, Integer.parseInt(id));
+                item.addCategory(category);
+            }
+            session.save(item);
+        });
     }
 
     @Override
     public void saveUser(User user) {
-        tx(session -> session.save(user));
+        txv(session -> session.save(user));
     }
 
     @Override

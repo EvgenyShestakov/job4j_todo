@@ -13,7 +13,7 @@ public interface Store {
 
     Collection<Category> findAllCategory();
 
-    void saveItem(Item item);
+    void saveItem(Item item, String[] catiDs);
 
     void saveUser(User user);
 
